@@ -1,0 +1,45 @@
+import processing.video.*;
+
+Capture cam;
+PImage[] buffer;
+int nFrames = 20;
+int iWrite = 0, iRead = 1;
+
+void setup(){
+  size(1280, 800);
+  cam = new Capture(this, 640, 360);
+  cam.start();
+  buffer = new PImage[nFrames];
+  
+  imageMode(CENTER);
+  noCursor();
+}
+
+void draw() {
+  
+   
+ // if(cam.available()) {
+  // loadPixels();
+    cam.read();
+    buffer[iWrite] = cam.get();
+    if(buffer[iRead] != null){
+      image(buffer[iRead], 960,400,640,800);
+      image(cam,320,400,640,800);
+    filter(GRAY);
+    textSize(70);
+    text("realtime",50,700);
+     text("delay",690,700);
+      
+    }
+    iWrite++;
+    iRead++;
+    if(iRead >= nFrames-1){
+      iRead = 0;
+    }
+    if(iWrite >= nFrames-1){
+      iWrite = 0;
+    }
+  //updatePixels();
+ // }   
+  // nFrames = int(map(mouseX,0,width,2,60));
+}
